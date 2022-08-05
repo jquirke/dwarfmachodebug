@@ -54,11 +54,28 @@ nextCu:
 					fmt.Printf("lineReader err: %v", err)
 					continue
 				}
+				ranges, err := dwarfdata.Ranges(entry)
+				if err != nil {
+					fmt.Printf("obtaining ranges err: %v", err)
+				} else {
+					var pcEntry dwarf.LineEntry
+
+					for _, rng := range ranges {
+						fileLine := ""
+						if err := lineReader.SeekPC(rng[0], &pcEntry); err != nil {
+							fmt.Printf("Couldn't seek PC for %08X\n", rng[0])
+						} else {
+							fileLine = fmt.Sprintf("%s:%d", pcEntry.File.Name, pcEntry.Line)
+						}
+						fmt.Printf("[%08X - %08X] (%s)\n", rng[0], rng[1], fileLine)
+					}
+				}
+				lineReader.Reset()
 				files := lineReader.Files()
 				for _, file := range files {
 					if file == nil {
 						fmt.Printf("unnamed file\n")
-						continue
+
 					}
 					//fmt.Printf("file: %v\n", file.Name)
 				}
