@@ -1,5 +1,5 @@
 # dwarfmachodebug
-tool used for inspecting DWARF LPT on Mach-O files. Used in root causing golang bug: https://github.com/golang/go/issues/54320
+tool used for inspecting DWARF LPT on Apple Mach-O files. Used in root causing golang bug: https://github.com/golang/go/issues/54320
 
 ## Build 
 ```
